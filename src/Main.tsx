@@ -1,16 +1,11 @@
 import { TextInput, View } from 'react-native';
-import Login from './components/login/Login';
 import React from 'react';
+import Signin from './screens/Signin';
 
 interface Props {}
 
 const Main: React.FC = ({}: Props) => {
-  return (
-    <View style={{ flex: 10 }}>
-      <View style={{ flex: 8 }}></View>
-      <Login userinfo="lee" />
-    </View>
-  );
+  return <Signin userinfo="lee" />;
 };
 
 export default Main;
