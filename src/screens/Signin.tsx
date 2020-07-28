@@ -1,12 +1,13 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View, Text } from 'react-native';
 import { useState } from 'react';
 import React from 'react';
 import InputBox from '../components/signin/InputBox';
 import SinginButton from '../components/signin/SigninButton';
 import Logo from '../components/signin/Logo';
-import { signinRequest } from '../lib/api/auth';
-import { connect, useDispatch } from 'react-redux';
-import { signinSucess } from '../modules/user/actions';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { signinRequest } from '../modules/user';
+import axios from 'axios';
+import { RootState } from '../modules/index';
 
 interface Props {
   userinfo: string;
@@ -15,6 +16,10 @@ interface Props {
 function Signin({ userinfo }: Props) {
   const [UserEmail, setUserEmail] = useState('');
   const [UserPassword, setUserPassword] = useState('');
+  const email = useSelector((state: RootState) => state.userReducer.email);
+  const access_token = useSelector(
+    (state: RootState) => state.userReducer.access_token
+  );
   const dispatch = useDispatch();
 
   const onchangeInputEmail = (text: string): void => {
@@ -24,16 +29,14 @@ function Signin({ userinfo }: Props) {
     setUserPassword(text);
   };
   const onSubmit = async () => {
-    const usersInfo = await signinRequest(UserEmail, UserPassword);
-    //dispatch(signinSucess(usersInfo));
-    //유저의 정보를 가져와서 리덕스에 등록
+    dispatch(signinRequest({ email: UserEmail, password: UserPassword }));
   };
 
   return (
     <View style={styles.signinStyle}>
-      <Logo />
+      <Text>{access_token}</Text>
       <InputBox name={'email'} onChange={onchangeInputEmail} />
-      <InputBox name={'password'} onChange={onchangeInputEmail} />
+      <InputBox name={'password'} onChange={onchangeInputPassword} />
       <SinginButton name={'singin'} onPressHandler={onSubmit} />
     </View>
   );

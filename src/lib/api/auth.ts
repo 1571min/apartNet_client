@@ -1,13 +1,12 @@
 import apiClient from './apiClient';
-import { userInfo } from '../../modules/user/types';
+import { userInfo, signinValue } from '../../modules/user/types';
 
 /*
  * Send Auth Email
  */
-export const signinRequest = (email: string, password: string) =>
+export const callSigninAPI = (data: signinValue) =>
   apiClient.post<signinResponse>('/user/signin', {
-    email,
-    password,
+    data,
   });
 export type signinResponse = {
   email: string;

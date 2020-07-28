@@ -3,10 +3,16 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Main from './src/Main';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './src/modules/index';
+import createSagaMiddleware from 'redux-saga';
+import { rootSaga } from './src/modules/index';
 
-const store = createStore(rootReducer);
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(rootSaga);
 
 const App: React.FC = () => {
   return (
