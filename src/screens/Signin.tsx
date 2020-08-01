@@ -8,19 +8,12 @@ import { connect, useDispatch, useSelector } from 'react-redux';
 import { signinRequest } from '../modules/user';
 import axios from 'axios';
 import { RootState } from '../modules/index';
+import useAuth from '../lib/hooks/useAuth';
 
-interface Props {
-  userinfo: string;
-}
-
-function Signin({ userinfo }: Props) {
+function Signin() {
   const [UserEmail, setUserEmail] = useState('');
   const [UserPassword, setUserPassword] = useState('');
-  const email = useSelector((state: RootState) => state.userReducer.email);
-  const access_token = useSelector(
-    (state: RootState) => state.userReducer.access_token
-  );
-  const dispatch = useDispatch();
+  const { email, address, fullName, setUserInfo, onSubmit } = useAuth();
 
   const onchangeInputEmail = (text: string): void => {
     setUserEmail(text);
@@ -28,16 +21,20 @@ function Signin({ userinfo }: Props) {
   const onchangeInputPassword = (text: string): void => {
     setUserPassword(text);
   };
-  const onSubmit = async () => {
-    dispatch(signinRequest({ email: UserEmail, password: UserPassword }));
-  };
 
   return (
     <View style={styles.signinStyle}>
-      <Text>{access_token}</Text>
+      <Text>{email}</Text>
+      <Text>{address}</Text>
+      <Text>{fullName}</Text>
       <InputBox name={'email'} onChange={onchangeInputEmail} />
       <InputBox name={'password'} onChange={onchangeInputPassword} />
-      <SinginButton name={'singin'} onPressHandler={onSubmit} />
+      <SinginButton
+        name={'singin'}
+        onPressHandler={() => {
+          onSubmit({ email: UserEmail, password: UserPassword });
+        }}
+      />
     </View>
   );
 }

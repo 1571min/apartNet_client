@@ -1,5 +1,6 @@
 import { createReducer } from 'typesafe-actions';
 import { userInfo, UserAction } from './types';
+import { USERINFO_SAVE } from './actions';
 import {
   SIGNIN_SUCCESS,
   SIGNIN_FAILURE,
@@ -9,14 +10,15 @@ import {
 } from './actions';
 
 const initialState: userInfo = {
+  userAuth: false,
   email: '',
   address: '',
-  full_name: '',
-  access_token: '',
+  fullName: '',
 };
 
 const userReducer = createReducer<userInfo, UserAction>(initialState, {
   [SIGNIN_SUCCESS]: (state, action) => ({ ...state, ...action.payload }),
+  [USERINFO_SAVE]: (state, action) => ({ ...state, ...action.payload }),
   [SIGNIN_FAILURE]: (state) => ({ ...state }),
   [SIGNUP_SUCSESS]: (state) => ({ ...state }),
   [SIGNUP_FAILURE]: (state) => ({ ...state }),
