@@ -17,8 +17,8 @@ const initialState: userInfo = {
 };
 
 const userReducer = createReducer<userInfo, UserAction>(initialState, {
-  [SIGNIN_SUCCESS]: (state, action) => ({ ...state, ...action.payload }),
-  [USERINFO_SAVE]: (state, action) => ({ ...state, ...action.payload }),
+  [SIGNIN_SUCCESS]: (state, action) => ({ ...action.payload }),
+  [USERINFO_SAVE]: (state, action) => ({ ...action.payload }),
   [SIGNIN_FAILURE]: (state) => ({ ...state }),
   [SIGNUP_SUCSESS]: (state) => ({ ...state }),
   [SIGNUP_FAILURE]: (state) => ({ ...state }),

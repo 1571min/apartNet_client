@@ -23,7 +23,7 @@ function* userSigninSaga(action: ReturnType<typeof signinRequest>) {
     const token = res.data.access_token;
     if (token) {
       const userInfo = yield call(callUserInfoAPI, token);
-      yield put(userInfoSave({ ...userInfo.data, ...{ userAuth: true } }));
+      yield put(userInfoSave({ ...userInfo.data, userAuth: true }));
       SecureStore.setItemAsync('token', token);
     }
   } catch (e) {
