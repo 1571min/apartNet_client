@@ -1,21 +1,19 @@
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View, Text } from 'react-native';
 import { useState } from 'react';
 import React from 'react';
 import InputBox from '../components/signin/InputBox';
 import SinginButton from '../components/signin/SigninButton';
 import Logo from '../components/signin/Logo';
-import { signinRequest } from '../lib/api/auth';
-import { connect, useDispatch } from 'react-redux';
-import { signinSucess } from '../modules/user/actions';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { signinRequest } from '../modules/user';
+import axios from 'axios';
+import { RootState } from '../modules/index';
+import useAuth from '../lib/hooks/useAuth';
 
-interface Props {
-  userinfo: string;
-}
-
-function Signin({ userinfo }: Props) {
+function Signin() {
   const [UserEmail, setUserEmail] = useState('');
   const [UserPassword, setUserPassword] = useState('');
-  const dispatch = useDispatch();
+  const { email, address, fullName, setUserInfo, onSubmit } = useAuth();
 
   const onchangeInputEmail = (text: string): void => {
     setUserEmail(text);
@@ -23,18 +21,20 @@ function Signin({ userinfo }: Props) {
   const onchangeInputPassword = (text: string): void => {
     setUserPassword(text);
   };
-  const onSubmit = async () => {
-    const usersInfo = await signinRequest(UserEmail, UserPassword);
-    //dispatch(signinSucess(usersInfo));
-    //유저의 정보를 가져와서 리덕스에 등록
-  };
 
   return (
     <View style={styles.signinStyle}>
-      <Logo />
+      <Text>{email}</Text>
+      <Text>{address}</Text>
+      <Text>{fullName}</Text>
       <InputBox name={'email'} onChange={onchangeInputEmail} />
-      <InputBox name={'password'} onChange={onchangeInputEmail} />
-      <SinginButton name={'singin'} onPressHandler={onSubmit} />
+      <InputBox name={'password'} onChange={onchangeInputPassword} />
+      <SinginButton
+        name={'singin'}
+        onPressHandler={() => {
+          onSubmit({ email: UserEmail, password: UserPassword });
+        }}
+      />
     </View>
   );
 }
